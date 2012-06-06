@@ -1,10 +1,10 @@
-<h1>Theme</h1>
+Theme
 
-<p>This is system which allows to manage themes in applications.</p>
-<p>A theme is a set of files (images, css, js, templates) which defines the look and feel of an application.</p>
-<p>There are static resources as images, css files and js libraries, and templates, which are used to render the domain model.</p>
-<p>Theme system goal is help you to retrieve a resource in a theme.</p>
-<p>Themes are stored in the root path of our application, usually in the themes folder. </p>
+This is system which allows to manage themes in applications.
+A theme is a set of files (images, css, js, templates) which defines the look and feel of an application.
+There are static resources as images, css files and js libraries, and templates, which are used to render the domain model.
+Theme system goal is help you to retrieve a resource in a theme.
+Themes are stored in the root path of our application, usually in the themes folder.
 
 <pre>
   themes
