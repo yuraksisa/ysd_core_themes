@@ -26,7 +26,7 @@ module Themes
             
     def initialize
 
-      unless defined?(@@themes_root_path)
+      unless defined?(@@theme_manager)
         raise "ThemeManager has not been initialize. Use ThemeManager.setup"
       end
       
