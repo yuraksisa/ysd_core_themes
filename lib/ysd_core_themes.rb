@@ -26,7 +26,7 @@ module Themes
             
     def initialize
 
-      unless defined?(@@theme_manager)
+      unless defined?(@@themes_root_path)
         raise "ThemeManager has not been initialize. Use ThemeManager.setup"
       end
       
@@ -149,7 +149,7 @@ module Themes
                   []
                 end
       
-      @name        = options['name'] || name
+      @name        = name
       @description = options['description']
       @regions     = options['regions'] || Theme.default_regions
       @scripts     = options['scripts']
