@@ -127,8 +127,7 @@ module Themes
     attr_reader :description
     attr_reader :root_path
     attr_reader :regions
-    attr_reader :scripts
-    attr_reader :styles
+    attr_reader :parent
         
     #
     # @param [String] name
@@ -142,19 +141,59 @@ module Themes
       @root_path = root_path    
       
       path = "#{root_path}/#{name}.yaml"
-           
+                 
       options = if File.exist?(path)      
                   options = YAML::load(File.open(path))
                 else
                   []
                 end
+                 
+      @name = name
       
-      @name        = name
-      @description = options['description']
-      @regions     = options['regions'] || Theme.default_regions
-      @scripts     = options['scripts']
-      @styles      = options['styles']
-        
+      if options.has_key?('description')
+        @description = options['description'] 
+      else
+        @description = name
+      end
+      
+      @regions = options['regions'] || Theme.default_regions
+      
+      if options.has_key?('scripts')
+        @scripts     = options['scripts'] 
+      else
+        @scripts = []
+      end
+      
+      if options.has_key?('styles')
+        @styles = options['styles'] 
+      else
+        @styles = []
+      end
+      
+      if options.has_key?('parent')
+        @parent = options['parent'].to_sym
+      else
+        @parent = nil
+      end
+      
+    end
+    
+    #
+    # Get the theme scripts (the theme and parent themes)
+    #
+    def scripts
+    
+      @full_scripts ||= get_full_scripts
+    
+    end
+    
+    #
+    # Get the theme styles (the theme an parent themes)
+    #
+    def styles
+    
+      @full_styles ||= get_full_styles
+    
     end
     
     # Retrieve the default regions
@@ -188,17 +227,62 @@ module Themes
       path = nil
       
       if ['static', 'template'].index(type)
+        
         if extension
           path=File.expand_path(File.join(root_path, 'extensions', extension, type, resource))
         else
           path=File.expand_path(File.join(root_path, type, resource))
         end
       
-        (File.exist?(path) and File.file?(path))?path:nil
+        unless File.exists?(path) and File.file?(path)
+          if parent
+            path = ThemeManager.instance.theme(parent).resource_path(resource, type, extension)
+          else
+            path = nil
+          end  
+        end             
       
       end
+
+      return path
     
     end  
+    
+    private
+    
+    #
+    # Get the full scripts (including it parent)
+    #
+    def get_full_scripts
+      
+      full_scripts = []
+      
+      if parent
+        full_scripts.concat(ThemeManager.instance.theme(parent).scripts)
+      end
+      
+      full_scripts.concat(@scripts)
+      
+      return full_scripts
+      
+    end
+    
+    #
+    # Get the full styles (including it parent)
+    #
+    def get_full_styles
+
+      full_styles = []
+      
+      if parent
+        full_styles.concat(ThemeManager.instance.theme(parent).styles)
+      end
+      
+      full_styles.concat(@styles)
+      
+      return full_styles
+    
+    end
           
   end
 
