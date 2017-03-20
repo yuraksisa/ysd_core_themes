@@ -157,19 +157,47 @@ module Themes
       end
       
       @regions = options['regions'] || Theme.default_regions
-      
+
+      # -- Scripts (common, frontend, backend)
+
       if options.has_key?('scripts')
         @scripts     = options['scripts'] 
       else
         @scripts = []
       end
-      
+
+      if options.has_key?('frontend_scripts')
+        @frontend_scripts = options['frontend_scripts']
+      else
+        @frontend_scripts = []
+      end
+
+      if options.has_key?('backoffice_scripts')
+        @backoffice_scripts = options['backoffice_scripts']
+      else
+        @backoffice_scripts = []
+      end
+
+      # -- Styles (common, frontend, backend)
+
       if options.has_key?('styles')
         @styles = options['styles'] 
       else
         @styles = []
       end
-      
+
+      if options.has_key?('frontend_styles')
+        @frontend_styles = options['frontend_styles']
+      else
+        @frontend_styles = []
+      end
+
+      if options.has_key?('backoffice_styles')
+        @backoffice_styles = options['backoffice_styles']
+      else
+        @backoffice_styles = []
+      end
+
       if options.has_key?('parent')
         @parent = options['parent'].to_sym
       else
@@ -186,7 +214,25 @@ module Themes
       @full_scripts ||= get_full_scripts
     
     end
-    
+
+    #
+    # Get the theme frontend scripts (the theme an parent themes)
+    #
+    def frontend_scripts
+
+      @full_frontend_scripts ||= get_full_frontend_scripts
+
+    end
+
+    #
+    # Get the theme frontend scripts (the theme an parent themes)
+    #
+    def backoffice_scripts
+
+      @full_backoffice_scripts ||= get_full_backoffice_scripts
+
+    end
+
     #
     # Get the theme styles (the theme an parent themes)
     #
@@ -195,7 +241,25 @@ module Themes
       @full_styles ||= get_full_styles
     
     end
-    
+
+    #
+    # Get the theme frontend styles (the theme an parent themes)
+    #
+    def frontend_styles
+
+      @full_frontend_styles ||= get_full_frontend_styles
+
+    end
+
+    #
+    # Get the theme frontend styles (the theme an parent themes)
+    #
+    def backoffice_styles
+
+      @full_backoffice_styles ||= get_full_backoffice_styles
+
+    end
+
     # Retrieve the default regions
     #
     # @return [Array]
@@ -266,7 +330,41 @@ module Themes
       return full_scripts
       
     end
-    
+
+    #
+    # Get the full frontend scripts (including it parent)
+    #
+    def get_full_frontend_scripts
+
+      full_frontend_scripts = []
+
+      if parent
+        full_frontend_scripts.concat(ThemeManager.instance.theme(parent).frontend_scripts)
+      end
+
+      full_frontend_scripts.concat(@frontend_scripts)
+
+      return full_frontend_scripts
+
+    end
+
+    #
+    # Get the full backoffice scripts (including it parent)
+    #
+    def get_full_backoffice_scripts
+
+      full_backoffice_scripts = []
+
+      if parent
+        full_backoffice_scripts.concat(ThemeManager.instance.theme(parent).backoffice_scripts)
+      end
+
+      full_backoffice_scripts.concat(@backoffice_scripts)
+
+      return full_backoffice_scripts
+
+    end
+
     #
     # Get the full styles (including it parent)
     #
@@ -283,7 +381,42 @@ module Themes
       return full_styles
     
     end
-          
+
+    #
+    # Get the full frontend styles (including it parent)
+    #
+    def get_full_frontend_styles
+
+      full_frontend_styles = []
+
+      if parent
+        full_frontend_styles.concat(ThemeManager.instance.theme(parent).frontend_styles)
+      end
+
+      full_frontend_styles.concat(@frontend_styles)
+
+      return full_frontend_styles
+
+    end
+
+    #
+    # Get the full backoffice styles (including it parent)
+    #
+    def get_full_backoffice_styles
+
+      full_backoffice_styles = []
+
+      if parent
+        full_backoffice_styles.concat(ThemeManager.instance.theme(parent).backoffice_styles)
+      end
+
+      full_backoffice_styles.concat(@backoffice_styles)
+
+      return full_backoffice_styles
+
+    end
+
+
   end
 
 end
