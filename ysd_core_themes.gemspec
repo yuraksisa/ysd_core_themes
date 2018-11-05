@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name    = "ysd_core_themes"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
   s.authors = ["Yurak Sisa Dream"]
   s.date    = "2012-02-02"
   s.email   = ["yurak.sisa.dream@gmail.com"]
